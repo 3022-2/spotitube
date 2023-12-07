@@ -3,7 +3,7 @@ A tool written in python that allows users to download Spotify songs, YouTube vi
 
 DISCLAIMER: This tool is for educational purposes only, I am not responsible for its use.
 
-LICENSE: This program is protected under GNU General Public License v3.0, Respect it.
+LICENSE: This program is protected under MIT License, Respect it.
 
 ```console
 # How to Install & run
