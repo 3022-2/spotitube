@@ -1,4 +1,4 @@
-from pytube import YouTube, Playlist
+from pytube import YouTube, Playlist, Channel
 from colorama import Fore, init
 from spotipy.oauth2 import SpotifyClientCredentials
 from youtubesearchpython import VideosSearch
@@ -12,19 +12,22 @@ options = Fore.RED + """
 2. Youtube To MP3 Downloader
 3. Youtube Playlist Downloader
 4. Spotify Song Downloader
+5. YouTube Channel Video Downloader
 0. Exit
 """
 
-choices = [1, 2, 3, 4, 0]
+choices = [1, 2, 3, 4, 5, 0]
 
 init(autoreset=True)
 cwd = os.getcwd()
 
 creds = os.path.join(cwd, "creds.txt")
-yt_vid_output_folder = os.path.join(cwd, "videos")
-yt_audio_output_folder = os.path.join(cwd, "audio")
-yt_playlist_output_folder = os.path.join(cwd, "yt_playlist_video")
-spotify_audio_output_folder = os.path.join(cwd, "spotify_audio")
+
+yt_vid_output_folder = os.path.join(cwd, "content", "videos")
+yt_audio_output_folder = os.path.join(cwd, "content", "audio")
+yt_playlist_output_folder = os.path.join(cwd, "content", "yt_playlist_video")
+spotify_audio_output_folder = os.path.join(cwd, "content", "spotify_audio")
+channel_videos_output = os.path.join(cwd, "content", "channel_videos")
 
 if not os.path.exists(yt_vid_output_folder):
     os.makedirs(yt_vid_output_folder)
@@ -34,6 +37,8 @@ if not os.path.exists(yt_playlist_output_folder):
     os.makedirs(yt_playlist_output_folder)
 if not os.path.exists(spotify_audio_output_folder):
     os.makedirs(spotify_audio_output_folder)
+if not os.path.exists(channel_videos_output):
+    os.makedirs(channel_videos_output)
 
 def sanitize_filename(filename):
     invalid_chars = r'<>:"/\|?*'
@@ -99,7 +104,7 @@ def yt_video_downloader():
         
 def yt_playlist_downloader():
     playlist_url = input(Fore.GREEN + "Enter YouTube playlist URL: ")
-    resolution = input(Fore.GREEN + "Enter Resolution (e.g., 720, 1080): ")
+    resolution = input(Fore.GREEN + "Enter Resolution (e.g., 720, 1080) dont add the p: ")
     print(Fore.RED + f"This Will Try To Download Your playlist Videos In {resolution}p However It May Have To Compromise For another Resolution")
     input(Fore.RED + "Press Enter To Continue")
     playlist = Playlist(playlist_url)
@@ -149,7 +154,6 @@ def spotify_song_downloader():
                 o.write(f"{client_id_inp}\n")
                 o.write(client_secret_inp)
                 o.close()
-
         else: 
             pass
         
@@ -188,16 +192,44 @@ def spotify_song_downloader():
                         print(Fore.RED + "Error could be caused due to no internet or an invalid link")
                         time.sleep(1)
                         start()
-
                 else:
                     return Fore.RED + "No Results Found On YouTube For The Given Track"
             else:
                 return Fore.RED + "Track Not Found On Spotify"
             
-            
     except Exception as e:
         print(Fore.RED + e)
 
+def download_channel_videos():
+    url = input(Fore.GREEN + 'To Get Url - YouTube Channel Homepage -> Scroll Down To "Videos > Play All" -> Right Click Play All -> Copy Link Address: ')
+    try:
+        resolution = input(Fore.GREEN + "Enter Resolution (e.g., 720, 1080) dont add the p: ")
+        print(Fore.RED + f"This Will Try To Download Your Channel Videos In {resolution}p However It May Have To Compromise For another Resolution")
+        input(Fore.RED + "Press Enter To Continue")
+    except Exception as e:
+        print(Fore.RED + f"{e}")
+        
+    channel = Playlist(url)
+
+    for video in channel.video_urls:
+        try:
+            yt = YouTube(video)
+            print(Fore.RED + f"DOWNLOADING {yt.title} to {channel_videos_output}")
+            yt.streams.filter(res=f"{resolution}p", progressive=True).first().download(output_path=channel_videos_output)
+            print(Fore.GREEN + f"{yt.title} Successfully Downloaded to {channel_videos_output}")
+
+        except:
+            try:
+                yt = YouTube(video)
+                try:
+                    os.remove(f"{channel_videos_output}{yt.title}")
+                except Exception as e:
+                    print(Fore.RED + f"{e}")
+                print(Fore.RED + f"DOWNLOADING {yt.title} to {channel_videos_output} In Alternative Resolution")
+                yt.streams.filter(progressive=True).first().download(output_path=channel_videos_output)
+                print(Fore.GREEN + f"{yt.title} Successfully Downloaded to {channel_videos_output}")
+            except Exception as e:
+                print(Fore.RED + f"{e}")
 def main(choice):
     if choice in choices:
         try:
@@ -209,11 +241,12 @@ def main(choice):
                 yt_playlist_downloader()
             elif choice == 4:
                 spotify_song_downloader()
+            elif choice == 5:
+                download_channel_videos()
             elif choice == 0:
                 exit()
         except Exception as e:
-            print(Fore.RED + f"{e}")
-            
+            print(Fore.RED + f"{e}")    
     else:
         print(Fore.RED + f"{choice} isnt an option")
         time.sleep(1)
@@ -243,4 +276,3 @@ if __name__ == "__main__":
     input(Fore.RED + """some video resolutions may not play (namely 240p and 480p). However these files are not corrupted 
           - try them in your browser. Press enter to continue""")
     start()
-    
