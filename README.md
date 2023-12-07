@@ -5,7 +5,7 @@ DISCLAIMER: This tool is for educational purposes only, I am not responsible for
 LICENSE: This program is protected under GNU General Public License v3.0, Respect it.
 
 ```console
-# How to Install
+# How to Install & run
 
 # Clone the repo
 $ git clone https://github.com/3022-2/spotitube.git
@@ -15,5 +15,8 @@ $ cd spotitube
 
 # install the requirements
 $ pip install -r requirements.txt
+
+# run script
+$ python main.py
 ```
 
