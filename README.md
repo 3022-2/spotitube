@@ -1,5 +1,5 @@
 # spotitube
-A tool written in python that allows users to download Spotify songs, YouTube videos as MP4, YouTube videos as MP3, YouTube Playlists as MP4
+A tool written in python that allows users to download Spotify songs, YouTube videos as MP4/3gpp, YouTube videos as MP3, YouTube Playlists as MP4/3gpp
 
 DISCLAIMER: This tool is for educational purposes only, I am not responsible for its use.
 
