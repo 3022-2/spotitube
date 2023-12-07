@@ -17,6 +17,8 @@ $ cd spotitube
 # install the requirements
 $ pip install -r requirements.txt
 
+# if requirements.txt doesnt work manually install the libraries 
+
 # run script
 $ python main.py
 ```
