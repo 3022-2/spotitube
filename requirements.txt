@@ -2,3 +2,4 @@ spotipy==2.23.0
 colorama==0.4.6
 pytube==15.0.0
 youtube-search-python==1.4.6
+moviepy==1.0.3
