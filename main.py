@@ -57,6 +57,8 @@ def yt_audio_downloader():
         new_file = base + '.mp3'
         os.rename(down, new_file)  
         print(Fore.GREEN +  f"{yt.streams[0].title} Downloaded to {yt_audio_output_folder}")
+        time.sleep(1)
+        start()
 
     except Exception as e:
         print(Fore.RED + f"{e}")
@@ -87,6 +89,8 @@ def yt_video_downloader():
                 output_path = os.path.join(yt_vid_output_folder, f"{sanitized_title}.{resolution_opt}.mp4")
                 yt.streams.filter(res=resolution_opt).first().download(output_path)
                 print(Fore.GREEN + f"{sanitized_title} Successfully Downloaded To {yt_vid_output_folder}")   
+                time.sleep(1)
+                start()
             except Exception as e:
                 print(Fore.RED + f"{e}")
                 time.sleep(1)
@@ -186,6 +190,8 @@ def spotify_song_downloader():
                         new_file = base + '.mp3'
                         os.rename(down, new_file)  
                         print(Fore.GREEN +  f"{user_input} Downloaded to {spotify_audio_output_folder}")
+                        time.sleep(1)
+                        start()
 
                     except Exception as e:
                         print(Fore.RED + f"{e}")
@@ -194,8 +200,12 @@ def spotify_song_downloader():
                         start()
                 else:
                     return Fore.RED + "No Results Found On YouTube For The Given Track"
+                    time.sleep(1)
+                    start()
             else:
                 return Fore.RED + "Track Not Found On Spotify"
+                time.sleep(1)
+                start()
             
     except Exception as e:
         print(Fore.RED + e)
@@ -230,6 +240,8 @@ def download_channel_videos():
                 print(Fore.GREEN + f"{yt.title} Successfully Downloaded to {channel_videos_output}")
             except Exception as e:
                 print(Fore.RED + f"{e}")
+                time.sleep(1)
+                start()
 def main(choice):
     if choice in choices:
         try:
