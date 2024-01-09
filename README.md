@@ -23,3 +23,4 @@ $ pip install -r requirements.txt
 $ python main.py
 ```
 
+I only update the code when you post issues. So if you want me to update leave a issue otherwise i wont update the code
